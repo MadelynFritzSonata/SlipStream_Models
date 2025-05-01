@@ -9,7 +9,7 @@ e_val = math.e
 slstrdata = pd.read_excel('Math 464/Homework/Capstone Project/Progress 2/SlipStreamData.xlsx', header=None) 
 
 def matcreator(p):
-
+#Function extracts time & blood data from the above excel file and builds the individual A,b & c matrices
     timedata = []
     blooddata = []
 
@@ -69,6 +69,7 @@ def matcreator(p):
 
     return Abmat, c, A, b, c_d, bds, A0
 
+#Generates a list with each of our optimization component matrices & vectors for use in constructing our overall linear program.
 Overalla = []
 Overalla0 = []
 Overallc = []
@@ -96,7 +97,10 @@ for yb in range(0,20):
     b0 = matcreator(yb)[3] 
     Overallb.append(b0)
 
+
+
 def colcreate():
+    #Combines all of the individual matrices together in order for use in our overall optimization program.
     fullb=np.concatenate((Overallb[0],Overallb[1],Overallb[2],Overallb[3],Overallb[4],Overallb[5],Overallb[6],Overallb[7],Overallb[8],
                           Overallb[9],Overallb[10],Overallb[11],Overallb[12],Overallb[13],Overallb[14],Overallb[15],Overallb[16],Overallb[17],
                           Overallb[18],Overallb[19]), axis=0)
@@ -381,9 +385,6 @@ for fb in range(0,FullN[1]):
 FullB=colcreate()[1]
 
 FullBounds=np.array(Fullbounds)
-#FullAMatrix=colcreate()[0]
-
-#print(np.shape(FullAMatrix))
 
 cfabc=np.zeros(3)
 cdlta=np.ones(FullN[1]-3)
@@ -406,6 +407,7 @@ b1 = res['x'][1]
 c1 = res['x'][2]
 
 def datapoint(n):
+#Function to allow us to pull data points for any of the given patients to compare to our optimal function.
     rowt=2*n
     timedata2=[]
     blooddata2=[]
@@ -423,7 +425,7 @@ def datapoint(n):
         else:
             pass
     return timedata2, blooddata2
-
+#Original function from the standard model
 def f(x1):
     return (pow(e_val,a1))*(pow(x1,b1))*pow(e_val,(x1*c1))
 
@@ -431,7 +433,7 @@ x1 = np.linspace(0,275)
 
 Calculationdata = []
 
-
+#Display's graph of our results
 plt.title("Patient Data Function Comparison")
 plt.plot(x1,f(x1),color='green')
 plt.scatter(datapoint(0)[0], datapoint(0)[1])
